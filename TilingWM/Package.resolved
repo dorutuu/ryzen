@@ -1,0 +1,33 @@
+{
+  "originHash" : "ddea83de19dbd7dddedbe493f745c5e1615a30612e8830b8632a02ccf7c200cb",
+  "pins" : [
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "c5d11a805e765f52ba34ec7284bd4fcd6ba68615",
+        "version" : "1.7.0"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log",
+      "state" : {
+        "revision" : "bbd81b6725ae874c69e9b8c8804d462356b55523",
+        "version" : "1.10.1"
+      }
+    },
+    {
+      "identity" : "swift-toml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jdfergason/swift-toml",
+      "state" : {
+        "revision" : "f4a3d9fbd94a855d6f85989c7e4c29e0ad75999c",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
