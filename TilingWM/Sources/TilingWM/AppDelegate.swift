@@ -3,6 +3,7 @@ import AppKit
 import Logging
 import TilingWMLib
 
+@MainActor
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var workspaceManager: WorkspaceManager!
@@ -39,7 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             // Load configuration
             try await configManager.load()
-            let config = configManager.getConfig()
+            let config = await configManager.getConfig()
             
             // Initialize command handler
             commandHandler = CommandHandler(
@@ -56,23 +57,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             await keybindingManager.registerKeybindings()
             
             // Setup window manager callbacks
-            windowManager.onWindowCreated = { [weak self] window in
-                Task {
-                    await self?.onWindowCreated(window)
+            await windowManager.setCallbacks(
+                onWindowCreated: { [weak self] window in
+                    Task { @MainActor in
+                        await self?.onWindowCreated(window)
+                    }
+                },
+                onWindowDestroyed: { [weak self] window in
+                    Task { @MainActor in
+                        await self?.onWindowDestroyed(window)
+                    }
+                },
+                onWindowFocused: { [weak self] window in
+                    Task { @MainActor in
+                        await self?.onWindowFocused(window)
+                    }
                 }
-            }
-            
-            windowManager.onWindowDestroyed = { [weak self] window in
-                Task {
-                    await self?.onWindowDestroyed(window)
-                }
-            }
-            
-            windowManager.onWindowFocused = { [weak self] window in
-                Task {
-                    await self?.onWindowFocused(window)
-                }
-            }
+            )
             
             // Start window manager
             await windowManager.start()
@@ -218,7 +219,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Task {
             do {
                 try await configManager.load()
-                let config = configManager.getConfig()
+                let config = await configManager.getConfig()
                 await keybindingManager.updateConfig(config)
                 await applyConfig(config)
                 logger.info("Config reloaded")

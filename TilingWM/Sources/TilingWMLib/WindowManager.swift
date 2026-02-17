@@ -10,15 +10,25 @@ public actor WindowManager {
     private let logger = Logger(label: "com.tilingwm.windowmanager")
     private var isRunning = false
     
-    // Callbacks
-    public var onWindowCreated: ((Window) -> Void)?
-    public var onWindowDestroyed: ((Window) -> Void)?
-    public var onWindowFocused: ((Window) -> Void)?
-    public var onWindowMoved: ((Window) -> Void)?
-    public var onWindowResized: ((Window) -> Void)?
+    // Callbacks - marked as @Sendable since Window is Sendable
+    public var onWindowCreated: (@Sendable (Window) -> Void)?
+    public var onWindowDestroyed: (@Sendable (Window) -> Void)?
+    public var onWindowFocused: (@Sendable (Window) -> Void)?
+    public var onWindowMoved: (@Sendable (Window) -> Void)?
+    public var onWindowResized: (@Sendable (Window) -> Void)?
     
     public init(workspaceManager: WorkspaceManager) {
         self.workspaceManager = workspaceManager
+    }
+    
+    public func setCallbacks(
+        onWindowCreated: (@Sendable (Window) -> Void)? = nil,
+        onWindowDestroyed: (@Sendable (Window) -> Void)? = nil,
+        onWindowFocused: (@Sendable (Window) -> Void)? = nil
+    ) {
+        self.onWindowCreated = onWindowCreated
+        self.onWindowDestroyed = onWindowDestroyed
+        self.onWindowFocused = onWindowFocused
     }
     
     // MARK: - Lifecycle

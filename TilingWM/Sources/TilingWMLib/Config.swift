@@ -1,7 +1,7 @@
 import Foundation
 import Logging
 
-public struct Config: Codable {
+public struct Config: Codable, Sendable {
     public var general: GeneralConfig
     public var gaps: GapsConfig
     public var workspaces: [WorkspaceConfig]
@@ -17,7 +17,7 @@ public struct Config: Codable {
     }
 }
 
-public struct GeneralConfig: Codable {
+public struct GeneralConfig: Codable, Sendable {
     public var startAtLogin: Bool
     public var enableAnimations: Bool
     public var defaultLayout: String
@@ -31,7 +31,7 @@ public struct GeneralConfig: Codable {
     }
 }
 
-public struct GapsConfig: Codable {
+public struct GapsConfig: Codable, Sendable {
     public var inner: CGFloat
     public var outer: CGFloat
     
@@ -41,7 +41,7 @@ public struct GapsConfig: Codable {
     }
 }
 
-public struct WorkspaceConfig: Codable {
+public struct WorkspaceConfig: Codable, Sendable {
     public var id: String
     public var name: String
     public var layout: String
@@ -53,7 +53,7 @@ public struct WorkspaceConfig: Codable {
     }
 }
 
-public struct KeybindingConfig: Codable {
+public struct KeybindingConfig: Codable, Sendable {
     public var key: String
     public var modifiers: [String]
     public var command: String
@@ -67,7 +67,7 @@ public struct KeybindingConfig: Codable {
     }
 }
 
-public struct RuleConfig: Codable {
+public struct RuleConfig: Codable, Sendable {
     public var app: String?
     public var title: String?
     public var workspace: String?
@@ -119,7 +119,8 @@ public actor ConfigManager {
         logger.info("Config saved")
     }
     
-    public func getConfig() -> Config {
+    public func getConfig() async -> Config {
+        // Return a copy of the config (Config is Sendable)
         return config
     }
     

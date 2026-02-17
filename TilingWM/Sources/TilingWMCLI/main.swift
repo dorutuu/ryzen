@@ -1,10 +1,11 @@
 import Foundation
+import AppKit
 import ArgumentParser
 import TilingWMLib
 
 @main
 struct TilingWMCLI: AsyncParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         commandName: "twm",
         abstract: "Tiling Window Manager CLI",
         subcommands: [
@@ -21,13 +22,13 @@ struct TilingWMCLI: AsyncParsableCommand {
 
 extension TilingWMCLI {
     struct Workspace: AsyncParsableCommand {
-        static var configuration = CommandConfiguration(
+        static let configuration = CommandConfiguration(
             abstract: "Manage workspaces",
             subcommands: [Switch.self, List.self]
         )
         
         struct Switch: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 commandName: "switch",
                 abstract: "Switch to a workspace"
             )
@@ -43,7 +44,7 @@ extension TilingWMCLI {
         }
         
         struct List: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 commandName: "list",
                 abstract: "List all workspaces"
             )
@@ -62,13 +63,13 @@ extension TilingWMCLI {
 
 extension TilingWMCLI {
     struct Window: AsyncParsableCommand {
-        static var configuration = CommandConfiguration(
+        static let configuration = CommandConfiguration(
             abstract: "Manage windows",
             subcommands: [Close.self, Focus.self, Move.self]
         )
         
         struct Close: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Close the focused window"
             )
             
@@ -79,7 +80,7 @@ extension TilingWMCLI {
         }
         
         struct Focus: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Focus a window by direction"
             )
             
@@ -93,7 +94,7 @@ extension TilingWMCLI {
         }
         
         struct Move: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Move the focused window"
             )
             
@@ -112,13 +113,13 @@ extension TilingWMCLI {
 
 extension TilingWMCLI {
     struct Layout: AsyncParsableCommand {
-        static var configuration = CommandConfiguration(
+        static let configuration = CommandConfiguration(
             abstract: "Manage layout",
             subcommands: [Set.self]
         )
         
         struct Set: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 commandName: "set",
                 abstract: "Set the layout mode"
             )
@@ -138,13 +139,13 @@ extension TilingWMCLI {
 
 extension TilingWMCLI {
     struct Config: AsyncParsableCommand {
-        static var configuration = CommandConfiguration(
+        static let configuration = CommandConfiguration(
             abstract: "Manage configuration",
             subcommands: [Edit.self, Reload.self]
         )
         
         struct Edit: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Open config in default editor"
             )
             
@@ -156,7 +157,7 @@ extension TilingWMCLI {
         }
         
         struct Reload: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Reload configuration"
             )
             
@@ -172,13 +173,13 @@ extension TilingWMCLI {
 
 extension TilingWMCLI {
     struct Service: AsyncParsableCommand {
-        static var configuration = CommandConfiguration(
+        static let configuration = CommandConfiguration(
             abstract: "Manage TilingWM service",
             subcommands: [Start.self, Stop.self, Restart.self, Status.self]
         )
         
         struct Start: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Start TilingWM"
             )
             
@@ -188,12 +189,12 @@ extension TilingWMCLI {
                 let appURL = Bundle.main.bundleURL
                     .deletingLastPathComponent()
                     .appendingPathComponent("TilingWM.app")
-                NSWorkspace.shared.openApplication(at: appURL, configuration: NSWorkspace.OpenConfiguration())
+                _ = try await NSWorkspace.shared.openApplication(at: appURL, configuration: NSWorkspace.OpenConfiguration())
             }
         }
         
         struct Stop: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Stop TilingWM"
             )
             
@@ -204,7 +205,7 @@ extension TilingWMCLI {
         }
         
         struct Restart: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Restart TilingWM"
             )
             
@@ -218,7 +219,7 @@ extension TilingWMCLI {
         }
         
         struct Status: AsyncParsableCommand {
-            static var configuration = CommandConfiguration(
+            static let configuration = CommandConfiguration(
                 abstract: "Check TilingWM status"
             )
             
